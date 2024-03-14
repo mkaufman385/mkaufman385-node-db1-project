@@ -9,6 +9,12 @@ exports.checkAccountPayload = (req, res, next) => {
   } else if (typeof name !== "string") {
     error.message = "name of account must be a string";
     next(error);
+  } else if (name.trim().length < 3 || name.trim().length > 100) {
+    error.message = "name of account must be between 3 and 100";
+    next(error);
+  } else if (typeof budget !== "number" || isNaN(budget)) {
+    error.message = "budget of account must be a number";
+    next(error);
   }
 };
 
