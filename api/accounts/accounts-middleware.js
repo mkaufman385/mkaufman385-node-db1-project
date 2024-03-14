@@ -1,8 +1,15 @@
 const Account = require("./accounts-model");
 
 exports.checkAccountPayload = (req, res, next) => {
-  console.log("checkAccountPayload middleware");
-  next();
+  const error = { status: 400 };
+  const { name, budget } = req.body;
+  if (name === undefined || budget === undefined) {
+    error.message = "name and budget are required";
+    next(error);
+  } else if (typeof name !== "string") {
+    error.message = "name of account must be a string";
+    next(error);
+  }
 };
 
 exports.checkAccountNameUnique = (req, res, next) => {
