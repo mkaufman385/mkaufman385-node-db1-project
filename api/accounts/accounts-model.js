@@ -1,13 +1,12 @@
 const db = require("../../data/db-config");
 
 const getAll = () => {
-  // DO YOUR MAGIC
   //select * from accounts
   return db("accounts");
 };
 
 const getById = (id) => {
-  // select * from accounts where id = 1
+  // select * from accounts where id = 1;
   return db("accounts").where("id", id).first();
 };
 
@@ -18,6 +17,7 @@ const create = async (account) => {
 };
 
 const updateById = async (id, account) => {
+  //update accounts set name='foo', budget=1000 where id=1;
   await db("accounts").where("id", id).update(account);
   return getById(id);
 };
