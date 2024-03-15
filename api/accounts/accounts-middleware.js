@@ -17,7 +17,7 @@ exports.checkAccountPayload = (req, res, next) => {
     error.message = "budget of account must be a number";
     next(error);
   } else if (budget < 0 || budget > 1000000) {
-    error.message = "budget of account is too large or small";
+    error.message = "budget of account is too large or too small";
     next(error);
   }
 };
