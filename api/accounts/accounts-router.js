@@ -26,11 +26,12 @@ router.post(
   md.checkAccountNameUnique,
   async (req, res, next) => {
     try {
-      const newAccount = await Account.create(req.body);
-      res.status(201).json(newAccount);
-      console.log("New Post");
+      const newAccount = await Account.create(req.body); // Assuming Account.create is a valid method to create an account
+      res.status(201).json(newAccount); // Respond with the newly created account
+      console.log("New account created successfully.");
     } catch (error) {
-      next(error);
+      console.error("Error creating account:", error);
+      next(error); // Pass the error to the error-handling middleware
     }
   }
 );
@@ -39,6 +40,7 @@ router.put(
   "/:id",
   md.checkAccountId,
   md.checkAccountPayload,
+  md.checkAccountNameUnique,
   async (req, res, next) => {
     try {
       console.log("Updating account with ID-->", req.params.id);
@@ -80,6 +82,7 @@ router.delete("/:id", md.checkAccountId, async (req, res, next) => {
 });
 
 router.use((err, req, res, next) => {
+  //eslint-disable-line
   res.status(err.status || 500).json({
     message: err.message,
   });
