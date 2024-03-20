@@ -3,12 +3,18 @@ const db = require("../../data/db-config");
 
 exports.checkAccountPayload = (req, res, next) => {
   const error = { status: 400 };
-  const { name, budget } = req.body;
+  let { name, budget } = req.body;
+
+  // Trim leading and trailing whitespace from the name
+  if (name) {
+    name = name.trim();
+  }
+
   if (name === undefined || budget === undefined) {
     error.message = "name and budget are required";
   } else if (typeof name !== "string") {
     error.message = "name of account must be a string";
-  } else if (name.trim().length < 3 || name.trim().length > 100) {
+  } else if (name.length < 3 || name.length > 100) {
     error.message = "name of account must be between 3 and 100";
   } else if (typeof budget !== "number" || isNaN(budget)) {
     error.message = "budget of account must be a number";
@@ -19,6 +25,7 @@ exports.checkAccountPayload = (req, res, next) => {
   if (error.message) {
     next(error);
   } else {
+    req.body.name = name;
     next();
   }
 };
