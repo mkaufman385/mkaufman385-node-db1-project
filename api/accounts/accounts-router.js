@@ -12,7 +12,12 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:id", md.checkAccountId, async (req, res, next) => {
-  res.json(req.account);
+  try {
+    const account = await Account.getById(req.params.id);
+    res.json(account);
+  } catch (err) {
+    next(err);
+  }
 });
 
 router.post(
@@ -74,7 +79,6 @@ router.delete("/:id", md.checkAccountId, async (req, res, next) => {
 });
 
 router.use((err, req, res, next) => {
-  // eslint-disable-line
   res.status(err.status || 500).json({
     message: err.message,
   });
