@@ -12,13 +12,17 @@ router.get("/", async (req, res, next) => {
 });
 
 router.get("/:id", md.checkAccountId, async (req, res, next) => {
-  try {
-    const account = await Account.getById(req.params.id);
-    res.json(account);
-  } catch (err) {
-    next(err);
-  }
+  res.json(req.account);
 });
+
+// router.get("/:id", md.checkAccountId, async (req, res, next) => {
+//   try {
+//     const account = await Account.getById(req.params.id);
+//     res.json(account);
+//   } catch (err) {
+//     next(err);
+//   }
+// });
 
 router.post(
   "/",
