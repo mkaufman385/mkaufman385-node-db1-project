@@ -21,13 +21,10 @@ router.post(
   md.checkAccountNameUnique,
   async (req, res, next) => {
     try {
-      const newAccount = await Account.create({
-        name: req.body.name.trim(),
-        budget: req.body.budget,
-      });
+      const newAccount = await Account.create(req.body);
       res.status(201).json(newAccount);
-    } catch (err) {
-      next(err);
+    } catch (error) {
+      next(error);
     }
   }
 );
@@ -38,13 +35,34 @@ router.put(
   md.checkAccountPayload,
   async (req, res, next) => {
     try {
-      const updated = await Account.updateById(req.params.id, req.body);
-      res.json(updated);
-    } catch (err) {
-      next(err);
+      console.log("Updating account with ID-->", req.params.id);
+      const updatedAccount = await Account.updateById(req.params.id, req.body);
+      if (!updatedAccount) {
+        console.log("Account not found-->");
+        return res.status(404).json({ message: "Account not found" });
+      }
+      console.log("Account updated successfully-->", updatedAccount);
+      res.status(200).json(updatedAccount);
+    } catch (error) {
+      console.error("Error updating account-->", error);
+      next(error);
     }
   }
 );
+
+// router.put(
+//   "/:id",
+//   md.checkAccountId,
+//   md.checkAccountPayload,
+//   async (req, res, next) => {
+//     try {
+//       const updated = await Account.updateById(req.params.id, req.body);
+//       res.json(updated);
+//     } catch (err) {
+//       next(err);
+//     }
+//   }
+// );
 
 router.delete("/:id", md.checkAccountId, async (req, res, next) => {
   try {
