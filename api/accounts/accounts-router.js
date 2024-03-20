@@ -28,6 +28,7 @@ router.post(
     try {
       const newAccount = await Account.create(req.body);
       res.status(201).json(newAccount);
+      console.log("New Post");
     } catch (error) {
       next(error);
     }
